@@ -24,13 +24,17 @@ func WalkProc(checkingPath string) map[string]bool {
 		if !entry.IsDir() {
 			continue
 		}
+		// create the filepath for the fd entry to check whether the file is in use
 		fdDirName := filepath.Join(procDir, entry.Name(), "fd")
 		symlinks, err := os.ReadDir(fdDirName)
 		if err != nil {
 			continue
 		}
+		// start loops to read symbolic links and check if they belong to the target directory
 		for _, link := range symlinks {
 			truePath, err := os.Readlink(filepath.Join(fdDirName, link.Name()))
+			// if there was an error reading the symbolic link or they do not belong to the target
+			// directory then they can safely be skipped
 			if err != nil || !strings.HasPrefix(truePath, checkingPath) {
 				continue
 			}
