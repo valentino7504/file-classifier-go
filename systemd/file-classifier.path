@@ -1,0 +1,6 @@
+[Unit]
+Description=File classifier for downloads
+[Path]
+PathChanged={{HOME_DIR}}/Downloads
+[Install]
+WantedBy=default.target
