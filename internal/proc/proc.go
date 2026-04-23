@@ -17,16 +17,17 @@ func WalkProc(checkingPath string) map[string]bool {
 		return filesInUse
 	}
 	for _, entry := range processes {
+		// if the entry is not a directory then there is obviously not a /fd directory to be read
 		if !entry.IsDir() {
 			continue
 		}
-		fdDirName := procDir + "/" + entry.Name() + "/fd"
+		fdDirName := filepath.Join(procDir, entry.Name(), "fd")
 		symlinks, err := os.ReadDir(fdDirName)
 		if err != nil {
 			continue
 		}
 		for _, link := range symlinks {
-			truePath, err := os.Readlink(fdDirName + "/" + link.Name())
+			truePath, err := os.Readlink(filepath.Join(fdDirName, link.Name()))
 			if err != nil || !strings.HasPrefix(truePath, checkingPath) {
 				continue
 			}
