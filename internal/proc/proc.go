@@ -4,6 +4,7 @@
 package proc
 
 import (
+	"log"
 	"os"
 	"strings"
 )
@@ -37,6 +38,7 @@ func WalkProc(checkingPath string) map[string]bool {
 
 func IsAvailable(filePath string, openFiles map[string]bool) bool {
 	if _, ok := openFiles[filePath]; ok {
+		log.Printf("ERROR: %s - file in use by another process", filePath)
 		return false
 	}
 	return true

@@ -2,6 +2,7 @@ package classify
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -24,8 +25,10 @@ func moveFile(src string, dest string) error {
 
 func Classify(basePath string, openFiles map[string]bool) {
 	for _, folder := range folders {
-		err := os.MkdirAll(filepath.Join(basePath, folder), 0o755)
+		dirPath := filepath.Join(basePath, folder)
+		err := os.MkdirAll(dirPath, 0o755)
 		if err != nil {
+			log.Printf("ERROR: creating directory failed - %s", dirPath)
 			return
 		}
 	}
@@ -47,8 +50,10 @@ func Classify(basePath string, openFiles map[string]bool) {
 			destPath := filepath.Join(basePath, dir, entryName)
 			err = moveFile(filePath, destPath)
 			if err != nil {
+				log.Printf("ERROR: moving file failed - %s to %s", filePath, destPath)
 				continue
 			}
+			log.Printf("SUCCESS moved %s to %s", filePath, destPath)
 		}
 	}
 }
