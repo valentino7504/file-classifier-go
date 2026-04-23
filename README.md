@@ -9,7 +9,7 @@ Watches a directory and automatically moves files into categorised subdirectorie
 ## Requirements
 
 - Linux
-- Go 1.21+
+- Go 1.16+
 - systemd
 
 ## Installation
