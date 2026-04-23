@@ -1,7 +1,15 @@
 package classify
 
+// folders is just a slice of strings containing the names of the subdirectories
+// to be created in the target directory.
 var folders = []string{"Images", "Music", "Videos", "Documents", "Archives"}
 
+// extensions is a map linking the extensions to their respective subdirectories.
+//
+// I used this approach so looking up the correct directory is an O(1) operation
+// without a messy switch-case. Although this would probably prove to look verbose
+// but I think I am okay with this. Plus adding an extension is simply just an extra
+// line here
 var extensions = map[string]string{
 	".jpg":  "Images",
 	".jpeg": "Images",

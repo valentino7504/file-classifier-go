@@ -6,9 +6,12 @@ package proc
 import (
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
+// WalkProc walks through the /proc directory and builds a "set" of files in the target directory
+// that are currently open for use as indicated by /proc/*/fd.
 func WalkProc(checkingPath string) map[string]bool {
 	const procDir string = "/proc"
 	filesInUse := make(map[string]bool)
@@ -37,6 +40,10 @@ func WalkProc(checkingPath string) map[string]bool {
 	return filesInUse
 }
 
+// IsAvailable checks if a specific file is within the files currently being used.
+//
+// openFiles is a "set" (actually a map) containing the results from WalkProc and filePath is the path
+// to the file to be checked for usage.
 func IsAvailable(filePath string, openFiles map[string]bool) bool {
 	if _, ok := openFiles[filePath]; ok {
 		log.Printf("ERROR: %s - file in use by another process", filePath)
